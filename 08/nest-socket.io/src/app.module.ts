@@ -1,15 +1,19 @@
+import * as path from 'node:path';
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { AuthModule } from './auth/auth.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { JwtAuthGuard } from './auth/jwt.guard';
+import { RolesGuard } from './auth/roles.guard';
 import { APP_GUARD } from '@nestjs/core';
-import { JwtGuard } from './auth/jwt.guard';
-import { RolesGuard } from './auth/role.guard';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: path.join(process.cwd(), 'client'),
+    }),
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'db.sqlite',
@@ -18,13 +22,13 @@ import { RolesGuard } from './auth/role.guard';
     }),
     AuthModule,
     UsersModule,
+    ChatModule,
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [
-    AppService,
     {
       provide: APP_GUARD,
-      useClass: JwtGuard,
+      useClass: JwtAuthGuard,
     },
     {
       provide: APP_GUARD,

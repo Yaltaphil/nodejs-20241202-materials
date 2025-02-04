@@ -13,7 +13,7 @@ export class UsersService {
     return this.userRepository.findOneBy({ username });
   }
 
-  create(username: string) {
+  async create(username: string) {
     const user = new User();
     user.username = username;
     return this.userRepository.save(user);

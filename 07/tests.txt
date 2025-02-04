@@ -1,0 +1,11 @@
+types of testing
+
+- unit
+    functions, class
+- functional
+    module, classes, simple external methods
+- e2e/integration
+    module, external system, databases, services
+
+
+TDD

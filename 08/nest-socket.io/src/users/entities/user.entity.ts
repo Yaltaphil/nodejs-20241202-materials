@@ -2,10 +2,8 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 export enum Role {
-  SUPERADMIN = 'superadmin',
-  ADMIN = 'admin',
-  MODERATOR = 'moderator',
-  USER = 'user',
+  User = 'user',
+  Admin = 'admin',
 }
 
 @Entity()
@@ -13,13 +11,13 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   username: string;
 
   @Column({ nullable: true })
   password: string;
 
-  @Column({ default: Role.USER })
+  @Column({ default: 'user' })
   role: Role;
 
   validatePassword(password: string) {
